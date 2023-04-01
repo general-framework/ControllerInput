@@ -17,7 +17,47 @@ struct ContentView: View {
 
     var body: some View {
         home
-            .frame(width: 500, height: 350)
+            .padding()
+//            .frame(width: 500, height: 350)
+    }
+
+    var triggers: some View {
+        VStack {
+            HStack(alignment: .center) {
+                Spacer()
+                if let l2 = gamepad.elements[id: "l2"] {
+                    Image(systemName: l2.state ? l2.pressed : l2.released)
+                        .offset(y: CGFloat(l2.value*16)-8).font(.title)
+                        .padding()
+                        .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
+                }
+                Spacer()
+                if let r2 = gamepad.elements[id: "r2"] {
+                    Image(systemName: r2.state ? r2.pressed : r2.released)
+                        .offset(y: CGFloat(r2.value*16)-8).font(.title)
+                        .padding()
+                        .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
+                }
+                Spacer()
+            }
+            HStack(alignment: .center) {
+                Spacer()
+                if let l1 = gamepad.elements[id: "l1"] {
+                    Image(systemName: l1.state ? l1.pressed : l1.released)
+                        .offset(y: CGFloat(l1.value*16)-8).font(.title)
+                        .padding()
+                        .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
+                }
+                Spacer()
+                if let r1 = gamepad.elements[id: "r1"] {
+                    Image(systemName: r1.state ? r1.pressed : r1.released)
+                        .offset(y: CGFloat(r1.value*16)-8).font(.title)
+                        .padding()
+                        .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
+                }
+                Spacer()
+            }
+        }
     }
 
     var dPad: some View {
@@ -96,7 +136,8 @@ struct ContentView: View {
             if let l3 = gamepad.elements[id: "l3"] {
                 Image(systemName: l3.state ? l3.pressed : l3.released)
                     .resizable()
-                    .frame(width: 75, height: 75)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 200, height: 200)
                     .offset(
                         x: CGFloat(l3.xvalue*20),
                         y: -CGFloat(l3.yvalue*20))
@@ -106,7 +147,8 @@ struct ContentView: View {
             if let r3 = gamepad.elements[id: "r3"] {
                 Image(systemName: r3.state ? r3.pressed : r3.released)
                     .resizable()
-                    .frame(width: 75, height: 75)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 200, height: 200)
                     .offset(
                         x: CGFloat(r3.xvalue*20),
                         y: -CGFloat(r3.yvalue*20))
@@ -118,78 +160,13 @@ struct ContentView: View {
 
     var home: some View {
         VStack {
+            triggers
             HStack {
                 dPad
                 Spacer()
                 shapes
             }
             joysticks
-
-//            let columns: [GridItem] = [GridItem(), GridItem(), GridItem(), GridItem()]
-//            LazyVGrid(columns: columns) {
-//                ForEach(gamepad.elements, id: \.id){ item in
-//                    switch item.type{
-//
-//                    case "button":
-//                        Image(systemName: item.state ? item.pressed : item.released).font(.title).padding().foregroundColor(colorChange(gamepad.connected))
-//                            .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
-//
-//                    case "trigger":
-//                        Image(systemName: item.state ? item.pressed : item.released).offset(y: CGFloat(item.value*16)-8).font(.title).padding().foregroundColor(colorChange(gamepad.connected))
-//                            .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
-//
-//                    case "stick":
-//                        Image(systemName: item.state ? item.pressed : item.released).offset(x: CGFloat(item.xvalue*10), y: -CGFloat(item.yvalue*10)).font(.title).padding().foregroundColor(colorChange(gamepad.connected))
-//                            .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
-//
-//                    case "battery":
-//                        VStack{
-//                            Image(systemName: battery(item.value, gamepad.state)).font(.title).padding().foregroundColor(colorChange(gamepad.connected))
-//                                .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
-//                            Text(String(format: "%.f", item.value)+" %").foregroundColor(colorChange(gamepad.connected))
-//                        }
-//
-//                    case "color":
-//                        Button(action: {
-//                            if gamepad.connected{
-//                                presented.toggle()
-//                            }
-//                        }){
-//                            VStack{
-//                                Image(systemName: item.released).font(.title).padding().foregroundColor(colorChange(gamepad.connected))
-//                                    .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
-//                                Text("color").foregroundColor(colorChange(gamepad.connected))
-//                            }
-//                        }.sheet(isPresented: $presented){
-//                            List{
-//                                ForEach(gamepad.colors, id: \.id){item in
-//                                    Button(action: {
-//                                        presented.toggle()
-//                                        gamepad.changeColor(item.id)
-//                                    }){
-//                                        Text(item.name).foregroundColor(item.Color)
-//                                    }
-//                                }
-//                            }
-//                        }
-//
-//                    case "vibration":
-//                        Button(action: {
-//                            gamepad.vibrate()
-//                        }){
-//                            VStack{
-//                                Image(systemName: item.released).font(.title).padding().foregroundColor(colorChange(gamepad.connected))
-//                                    .overlay(RoundedRectangle(cornerRadius: 15).stroke(colorChange(gamepad.connected), lineWidth: 2))
-//                                Text("vibration").foregroundColor(colorChange(gamepad.connected))
-//                            }
-//                        }
-//
-//                    default:
-//                        EmptyView()
-//                    }
-//                }
-//            }
-
         }
         .padding(.horizontal)
     }
@@ -203,7 +180,7 @@ struct ContentView: View {
         }
     }
 
-    func battery(_ percentage:Float, _ state:GCDeviceBattery.State)-> String{
+    func battery(_ percentage: Float, _ state: GCDeviceBattery.State) -> String{
         if state == .charging {
             return "battery.100.bolt"
         } else {
