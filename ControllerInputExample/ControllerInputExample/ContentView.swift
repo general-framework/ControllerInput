@@ -13,7 +13,7 @@ struct ContentView: View {
     @State var connectedColor = Color.blue
     @State var number = 0
     @State var presented = false
-    @ObservedObject var gamepad = GameController()
+    @ObservedObject var gamepad = GamepadController()
 
     var body: some View {
         home

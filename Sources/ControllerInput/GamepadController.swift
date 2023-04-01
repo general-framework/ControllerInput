@@ -4,7 +4,7 @@ import Combine
 import SwiftUI
 import IdentifiedCollections
 
-public class GameController: ObservableObject{
+public class GamepadController: ObservableObject{
     @Published public var connected = false
     @Published public var state = GCDeviceBattery.State.unknown
     var number = 0
@@ -152,7 +152,7 @@ public class GameController: ObservableObject{
     }
 }
 
-extension GameController {
+extension GamepadController {
     public func connectedStream() -> AsyncStream<Bool> {
         return AsyncStream<Bool> { continuation in
             let cancellable = _connected.projectedValue.sink { value in
