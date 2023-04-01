@@ -14,6 +14,11 @@ private class ControlEventController<Content: View>: GCEventViewController {
 
     public init(@ViewBuilder content: () -> Content) {
         self.content = content()
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Lazy properties
@@ -51,11 +56,13 @@ private struct ControlEventView<Content: View>: UIViewControllerRepresentable {
 
     // MARK: - UIViewControllerRepresentable
 
-    func makeUIViewController(context: Context) -> ControlEventController {
-        .init(content: content)
+    func makeUIViewController(context: Context) -> ControlEventController<Content> {
+        ControlEventController {
+            content
+        }
     }
 
-    func updateUIViewController(_ uiViewController: ControlEventController, context: Context) {
+    func updateUIViewController(_ uiViewController: ControlEventController<Content>, context: Context) {
 
     }
 }
@@ -106,7 +113,9 @@ public struct ControlHostView<Content: View>: View {
 
     private var eventHost: some View {
 #if canImport(UIKit)
-        ControlEventView(content: content)
+        ControlEventView {
+            content
+        }
 #else
         content
 #endif
@@ -141,7 +150,7 @@ public struct ControlHostView<Content: View>: View {
             }
             return event
         }
-#else
+#elseif os(iOS)
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
             UIApplication.shared.sendAction(#selector(UIResponder.becomeFirstResponder), to: nil, from: nil, for: nil)
