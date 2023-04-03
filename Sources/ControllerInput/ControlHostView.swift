@@ -126,7 +126,7 @@ public struct ControlHostView<Content: View>: View {
     public var body: some View {
         eventHost
             .padding()
-            .focusable(true)
+//            .focusable(true)
             .onAppear {
                 setupKeyboardHandling()
             }
